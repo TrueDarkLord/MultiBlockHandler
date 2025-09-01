@@ -1,0 +1,7 @@
+name: MultiBlockHandler
+version: '0.0.0-SNAPSHOT'
+main: me.truedarklord.multiBlockHandler.MultiBlockHandler
+api-version: '1.20'
+prefix: MBH
+authors: [ TrueDarkLord ]
+description: Merges drops from multiblock destroy event into the BlockDropItemsEvent that initiated it.
