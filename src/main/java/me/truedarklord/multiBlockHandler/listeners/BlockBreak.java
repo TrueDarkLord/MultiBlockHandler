@@ -24,8 +24,8 @@ public class BlockBreak implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBreak(BlockDropItemEvent event) {
-        Block currentBlock = event.getBlock();
-        Material type = currentBlock.getType();
+        Material type = event.getBlockState().getType();
+        Block currentBlock = event.getBlock().getRelative(0, 1, 0);
         List<Item> drops = event.getItems();
 
         if (!plugin.getConfig().getStringList("whitelist").contains(type.toString())) return;
