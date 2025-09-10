@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BlockBreak implements Listener {
@@ -28,6 +29,7 @@ public class BlockBreak implements Listener {
         Material type = event.getBlockState().getType();
         FileConfiguration config = plugin.getConfig();
         Block currentBlock = event.getBlock().getRelative(0, 1, 0);
+        List<Block> blocks = new ArrayList<>();
         List<Item> drops = event.getItems();
         int offset = 0;
 
@@ -44,8 +46,17 @@ public class BlockBreak implements Listener {
                 drops.add(currentBlock.getWorld().dropItemNaturally(currentBlock.getLocation(), drop));
             }
 
-            currentBlock.setType(Material.AIR);
+            blocks.add(currentBlock);
             currentBlock = currentBlock.getRelative(0, offset, 0);
+        }
+
+        /*
+            Due to how multi-block structures work:
+              All drops need to be captured prior to setting blocks to air.
+              Setting blocks to air needs to be reversed.
+         */
+        for (int i = blocks.size() - 1; i >= 0; i--) {
+            blocks.get(i).setType(Material.AIR);
         }
 
     }
