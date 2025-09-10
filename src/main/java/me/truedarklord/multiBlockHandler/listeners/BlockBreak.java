@@ -3,6 +3,7 @@ package me.truedarklord.multiBlockHandler.listeners;
 import me.truedarklord.multiBlockHandler.MultiBlockHandler;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -25,19 +26,26 @@ public class BlockBreak implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBreak(BlockDropItemEvent event) {
         Material type = event.getBlockState().getType();
+        FileConfiguration config = plugin.getConfig();
         Block currentBlock = event.getBlock().getRelative(0, 1, 0);
         List<Item> drops = event.getItems();
+        int offset = 0;
 
-        if (!plugin.getConfig().getStringList("whitelist").contains(type.toString())) return;
+        if (config.getStringList("above-whitelist").contains(type.toString())) offset = 1;
+        if (config.getStringList("below-whitelist").contains(type.toString())) offset = -1;
 
-        while (currentBlock.getType().equals(type)) {
+        if (offset == 0) return;
+
+        List<String> byproduct = config.getStringList("byproduct." + type);
+
+        while (currentBlock.getType().equals(type) || byproduct.contains(currentBlock.getType().toString())) {
 
             for (ItemStack drop : currentBlock.getDrops()) {
                 drops.add(currentBlock.getWorld().dropItemNaturally(currentBlock.getLocation(), drop));
             }
 
             currentBlock.setType(Material.AIR);
-            currentBlock = currentBlock.getRelative(0, 1, 0);
+            currentBlock = currentBlock.getRelative(0, offset, 0);
         }
 
     }

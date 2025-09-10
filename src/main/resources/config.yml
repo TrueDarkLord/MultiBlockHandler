@@ -1,5 +1,14 @@
-whitelist:
+above-whitelist:
   - SUGAR_CANE
   - KELP
+  - KELP_PLANT
   - BAMBOO
   - CACTUS
+
+below-whitelist:
+  - CAVE_VINES_PLANT
+
+byproduct:
+  CACTUS: [ CACTUS_FLOWER ]
+  KELP: [ KELP_PLANT ]
+  KELP_PLANT: [ KELP ]
