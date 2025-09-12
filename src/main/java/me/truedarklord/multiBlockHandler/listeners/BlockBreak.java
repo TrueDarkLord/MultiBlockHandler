@@ -3,6 +3,7 @@ package me.truedarklord.multiBlockHandler.listeners;
 import me.truedarklord.multiBlockHandler.MultiBlockHandler;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.CaveVinesPlant;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
@@ -47,6 +48,7 @@ public class BlockBreak implements Listener {
             }
 
             blocks.add(currentBlock);
+            popBerries(currentBlock, drops);
             currentBlock = currentBlock.getRelative(0, offset, 0);
         }
 
@@ -59,6 +61,20 @@ public class BlockBreak implements Listener {
             blocks.get(i).setType(Material.AIR);
         }
 
+    }
+
+    /**
+     * Gathers and stores berries in the drops of an item.
+     * @param block The block to check for berries.
+     * @param drops The list of drops to add the item to.
+     */
+    private void popBerries(Block block, List<Item> drops) {
+        if (!(block instanceof CaveVinesPlant plant)) return;
+
+        if (!plant.isBerries()) return;
+
+        plant.setBerries(false);
+        drops.add(block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.GLOW_BERRIES)));
     }
 
 }
