@@ -51,3 +51,10 @@ jobs:
           version-name: "MultiBlockHandler - ${{ github.ref }}"
           version-number: "${{ github.ref }}"
           featured: true
+          loaders: |
+            spigot
+            paper
+            purpur
+            folia
+          game-versions: |
+            >=1.20
