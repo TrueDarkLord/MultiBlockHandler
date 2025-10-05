@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.truedarklord'
-version = '0.0.0-SNAPSHOT-2'
+version = '0.0.0-SNAPSHOT-4'
 
 repositories {
     mavenCentral()
