@@ -4,11 +4,11 @@ import me.truedarklord.multiBlockHandler.MultiBlockHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.CaveVinesPlant;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -30,8 +30,8 @@ public class BlockBreak implements Listener {
 
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onBreak(BlockDropItemEvent event) {
-        if (!(event.getBlock().getBlockData() instanceof CaveVinesPlant)) return;
+    public void onDrop(BlockDropItemEvent event) {
+        if (event.getBlock().getBlockData() instanceof CaveVinesPlant) return;
 
         Material type = event.getBlockState().getType();
         FileConfiguration config = plugin.getConfig();
@@ -64,6 +64,13 @@ public class BlockBreak implements Listener {
               Setting blocks to air needs to be reversed.
          */
         for (int i = blocks.size() - 1; i >= 0; i--) {
+            Block block = blocks.get(i);
+
+            if (block.getType().equals(Material.KELP) || block.getType().equals(Material.KELP_PLANT)) {
+                block.setType(Material.WATER);
+                continue;
+            }
+
             blocks.get(i).setType(Material.AIR);
         }
 
