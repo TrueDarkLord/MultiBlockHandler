@@ -30,8 +30,8 @@ public class BlockBreak implements Listener {
 
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onBreak(BlockDropItemEvent event) {
-        if (!(event.getBlock().getBlockData() instanceof CaveVinesPlant)) return;
+    public void onDrop(BlockDropItemEvent event) {
+        if (event.getBlock().getBlockData() instanceof CaveVinesPlant) return;
 
         Material type = event.getBlockState().getType();
         FileConfiguration config = plugin.getConfig();
